@@ -1,6 +1,6 @@
-podTemplate(label: 'maven-selenium', containers: [
-  containerTemplate(name: 'maven-firefox', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
-  containerTemplate(name: 'maven-chrome', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
+podTemplate(label: 'node-selenium', containers: [
+  containerTemplate(name: 'node-firefox', image: 'node:8', ttyEnabled: true, command: 'cat'),
+  containerTemplate(name: 'node-chrome', image: 'node:8', ttyEnabled: true, command: 'cat'),
   containerTemplate(name: 'selenium-hub', image: 'selenium/hub:3.4.0'),
   // because containers run in the same network space, we need to make sure there are no port conflicts
   // we also need to adapt the selenium images because they were designed to work with the --link option
@@ -18,21 +18,23 @@ podTemplate(label: 'maven-selenium', containers: [
   ])
   ]) {
 
-  node('maven-selenium') {
+  node('node-selenium') {
     stage('Checkout') {
       git 'https://github.com/carlossg/selenium-example.git'
       parallel (
         firefox: {
-          container('maven-firefox') {
+          container('node-firefox') {
             stage('Test firefox') {
-              sh 'mvn -B clean test -Dselenium.browser=firefox -Dsurefire.rerunFailingTestsCount=5 -Dsleep=0'
+              sh 'npm -v'  
+              sh 'npm selenium-standalong --v'
             }
           }
         },
         chrome: {
-          container('maven-chrome') {
+          container('node-chrome') {
             stage('Test chrome') {
-              sh 'mvn -B clean test -Dselenium.browser=chrome -Dsurefire.rerunFailingTestsCount=5 -Dsleep=0'
+              sh 'pwd'  
+              sh 'npm selenium-standalong --v'
             }
           }
         }
