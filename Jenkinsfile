@@ -27,6 +27,7 @@ podTemplate(label: 'node-selenium', containers: [
             stage('Test firefox') {
               sh 'npm -v'  
               sh 'npm selenium-standalong --v'
+              sh 'npm run test:unit'
             }
           }
         },
@@ -35,6 +36,7 @@ podTemplate(label: 'node-selenium', containers: [
             stage('Test chrome') {
               sh 'pwd'  
               sh 'npm selenium-standalong --v'
+                sh 'npm run test:unit'
             }
           }
         }
